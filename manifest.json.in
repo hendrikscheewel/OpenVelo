@@ -1,6 +1,6 @@
 {
     "name": "openvelo.hendrikscheewel",
-    "description": "Application for Bruxelles Villo",
+    "description": "Display availability information of several public bike-sharing systems around the globe.",
     "architecture": "@CLICK_ARCH@",
     "title": "OpenVelo",
     "hooks": {
