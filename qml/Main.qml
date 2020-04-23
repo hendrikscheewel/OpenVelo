@@ -101,13 +101,11 @@ MainView {
                         text: i18n.tr('Settings')
                         onTriggered: stackview.currentIndex = 2;
                     },
-                    /*Action {
-                        iconName: 'view-refresh'
-                        text: i18n.tr('Rotate to north')
-                        onTriggered: map.bearing = 0
-
-                    },*/
-
+                    Action {
+                        iconName: 'reload'
+                        text: i18n.tr('Reload from Server');
+                        onTriggered: python.loadFromServer();
+                    },
                     Action {
                         iconName: 'view-list-symbolic'
                         text: i18n.tr('Update Location')
@@ -118,7 +116,6 @@ MainView {
 
 
     Map {
-
         id: map
         anchors.fill: parent
         plugin: mapPlugin
@@ -232,7 +229,7 @@ MainView {
                     }
                     Row {
                       id: barLabels
-                      width : busyBar.width// 0.8*innerCircle.width;
+                      width : busyBar.width
                       anchors.horizontalCenter: parent.horizontalCenter;
                       //spacing: 0.4*innerCircle.width
                       /*Image {
@@ -284,15 +281,6 @@ MainView {
                       }
 
                     }
-
-
-                    /*Text{
-                      anchors.horizontalCenter: parent.horizontalCenter;
-                      color: "white";
-                      horizontalAlignment: Text.AlignHCenter;
-                      text: "Bikes: " + available_bikes + "<br>Stands:" + available_bike_stands;
-                      font.pointSize: 8;
-                    }*/
                     }
 
 
@@ -301,9 +289,20 @@ MainView {
 
               }
               }
+          }
 
-
-
+          MapQuickItem{
+            id: point;
+            coordinate : QtPositioning.coordinate(root.contractInfo[root.contractName.toLowerCase()]['lat'], root.contractInfo[root.contractName.toLowerCase()]['lng']);
+            sourceItem:Rectangle{
+              anchors.centerIn: parent;
+              width: units.gu(5);
+              height: width;
+              border.color:"white";
+              border.width: 1;
+              radius: width/2;
+              color:"red";
+            }
           }
 
           }
@@ -315,36 +314,47 @@ MainView {
           color: '#888888'
           opacity: 0.8;
           visible : true
-          //Column {
-            //anchors.fill: parent
-            /*Text {
-                    anchors.fill: parent
-                    width: 0.8* parent.width
-                    text: "Loading<br>station<br>information."
-                    font.pointSize: 24
-                    color: "white"
-                    horizontalAlignment:Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-            }*/
+
             BusyIndicator {
                 anchors.centerIn: parent
                 running: loadingDialog.visible
             }
-          //}
+          }
+
+          Row {
+            width: parent.width
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+          Button{
+            id : zoomOut
+            width: parent.width/3
+            text: '-'
+            onClicked: map.zoomLevel = map.zoomLevel - 1
+            }
+          Button{
+            id : centerAtPosition
+            width: parent.width/3
+            text: 'Center'
+            onClicked: map.center = point.coordinate
+          }
+          Button{
+            id : zoomIn
+            width: parent.width/3
+            text: '+'
+            onClicked: map.zoomLevel = map.zoomLevel + 1
+          }
           }
 
 
-    /*PositionSource {
+    PositionSource {
     id: src
     updateInterval: 1000
     active: true
 
     onPositionChanged: {
-        centerAtLocation.enabled = true
-        var coord = src.position.coordinate;
-        console.log("Coordinate:", coord.longitude, coord.latitude);
+        point.coordinate = src.position.coordinate;
     }
-    }*/
+    }
     }
 
 
@@ -416,33 +426,11 @@ MainView {
             trailingActionBar.actions: [
 
                 Action {
-                  function loadFromServer(){
-                          loadingDialog.visible =  true
-
-                          veloModel.clear()
-
-                          python.call('main.AllInfo', [root.contractName], function(returnValue) {
-
-                            for (var i = 0; i < returnValue.length; i = i+1)  {
-
-                                veloModel.append({"number": returnValue[i]['number'],
-                                                  "name":returnValue[i]['address'],
-                                                  "available_bikes": returnValue[i]['available_bikes'],
-                                                  "available_bike_stands": returnValue[i]['available_bike_stands'],
-                                                  "lat": returnValue[i]['position']['lat'],
-                                                  "lng": returnValue[i]['position']['lng'],
-                                                  "status": returnValue[i]['status'],})
-                            }
-
-
-                          })
-                          loadingDialog.visible =  false
-                      }
                     iconName: 'tick'
                     text: i18n.tr('Check')
                     onTriggered: {
                       stackview.currentIndex = 0;
-                      loadFromServer()
+                      python.loadFromServer()
                     }
                 }
             ]
@@ -506,6 +494,7 @@ MainView {
 
 
 
+
     Python {
         id: python
 
@@ -528,14 +517,6 @@ MainView {
               }
 
               loadingDialog.visible =  false
-
-              var item = Qt.createQmlObject('import QtQuick 2.7; import QtLocation 5.3;import QtPositioning 5.6; MapQuickItem{id: point; coordinate : map.center;}', map, "dynamic");
-              var circle = Qt.createQmlObject('import QtQuick 2.7; Rectangle{ anchors.centerIn: parent; width: units.gu(2); height: width; border.color:"white"; border.width: 1; radius: width/2; color:"red";}', map);
-              item.sourceItem = circle;
-
-              /*map.addMapItem(item);*/
-
-
             })
 
             });
@@ -544,6 +525,29 @@ MainView {
         onError: {
             console.log('python error: ' + traceback);
         }
+
+        function loadFromServer(){
+                loadingDialog.visible =  true
+                map.zoomLevel = 13
+                veloModel.clear()
+
+                python.call('main.AllInfo', [root.contractName], function(returnValue) {
+
+                  for (var i = 0; i < returnValue.length; i = i+1)  {
+
+                      veloModel.append({"number": returnValue[i]['number'],
+                                        "name":returnValue[i]['address'],
+                                        "available_bikes": returnValue[i]['available_bikes'],
+                                        "available_bike_stands": returnValue[i]['available_bike_stands'],
+                                        "lat": returnValue[i]['position']['lat'],
+                                        "lng": returnValue[i]['position']['lng'],
+                                        "status": returnValue[i]['status'],})
+                  }
+
+
+                })
+                loadingDialog.visible =  false
+            }
 
     }
 

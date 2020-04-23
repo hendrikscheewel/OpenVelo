@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:59+0000\n"
+"POT-Creation-Date: 2020-04-23 12:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,23 +21,27 @@ msgstr ""
 msgid "Map"
 msgstr ""
 
-#: ../qml/Main.qml:101 ../qml/Main.qml:363 ../qml/Main.qml:412
+#: ../qml/Main.qml:101 ../qml/Main.qml:373 ../qml/Main.qml:422
 msgid "Settings"
 msgstr ""
 
-#: ../qml/Main.qml:113 ../qml/Main.qml:368
+#: ../qml/Main.qml:106
+msgid "Reload from Server"
+msgstr ""
+
+#: ../qml/Main.qml:111 ../qml/Main.qml:378
 msgid "Update Location"
 msgstr ""
 
-#: ../qml/Main.qml:358
+#: ../qml/Main.qml:368
 msgid "List"
 msgstr ""
 
-#: ../qml/Main.qml:442
+#: ../qml/Main.qml:430
 msgid "Check"
 msgstr ""
 
-#: ../qml/Main.qml:490
+#: ../qml/Main.qml:478
 msgid "Rotate to map"
 msgstr ""
 
