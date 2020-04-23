@@ -83,8 +83,6 @@ MainView {
     property var contractName : settings.contractName
 
 
-
-
         StackLayout {
             id: stackview
             anchors.fill : parent
@@ -127,7 +125,186 @@ MainView {
         zoomLevel: 13
         center: QtPositioning.coordinate(root.contractInfo[root.contractName.toLowerCase()]['lat'], root.contractInfo[root.contractName.toLowerCase()]['lng'])
 
+        ListModel {
+            id: veloModel
 
+            }
+          MapItemView {
+              model: veloModel
+              delegate: MapQuickItem {
+                  coordinate: QtPositioning.coordinate(lat, lng)
+                  zoomLevel: if (map.zoomLevel <  16) {16} else {0}
+
+                  sourceItem:Item {
+                    Rectangle{
+                      width: units.gu(2*6);
+                      height: width;
+                      radius: width/2;
+                      anchors.bottom: parent.verticalCenter;
+                      anchors.left: parent.horizontalCenter;
+                      border.color:"#FFFFFF";
+                      border.width:2;
+                      transformOrigin: Item.BottomLeft;
+                      rotation: -45; }
+
+                    Rectangle{width: units.gu(1.1*6);
+                     height: width;
+                     radius: width/20;
+                     anchors.bottom: parent.verticalCenter;
+                     anchors.left: parent.horizontalCenter;
+                     border.color:"#FFFFFF"; border.width:2;
+                     transformOrigin: Item.BottomLeft;
+                     rotation: -45; }
+
+                     Rectangle{
+                       width: units.gu(1.1*6);
+                       height: width;
+                       radius: width/20;
+                       anchors.bottom: parent.verticalCenter;
+                       anchors.left: parent.horizontalCenter;
+                       color:"#666666";
+                       transformOrigin: Item.BottomLeft;
+                       rotation: -45;
+                     }
+
+                     Rectangle{
+                       id: innerCircle
+                       width: units.gu(2*6);
+                       height: width;
+                       radius: width/2;
+                       anchors.bottom: parent.verticalCenter;
+                       anchors.left: parent.horizontalCenter;
+                       color:"#666666";
+                       transformOrigin: Item.BottomLeft;
+                       rotation: -45;
+
+                    Item{
+                      rotation: 45;
+                      anchors.centerIn: parent;
+
+                    Column{
+                      anchors.centerIn: parent;
+                    Text{
+                      anchors.horizontalCenter: parent.horizontalCenter;
+                      color: "white";
+                      horizontalAlignment: Text.AlignHCenter;
+                      text: number;
+                      font.bold :true;
+                    }
+                    Text{
+                      width: 0.8*innerCircle.width
+                      maximumLineCount: 2
+                      anchors.horizontalCenter: parent.horizontalCenter;
+                      color: "white";
+                      horizontalAlignment: Text.AlignHCenter;
+                      text: name.split(' - ')[0]//.slice(0, 12) + '...';
+                      wrapMode: Text.Wrap
+                      font.pointSize: 20
+                    }
+                    Row {
+                      id: busyBar
+                      anchors.horizontalCenter: parent.horizontalCenter;
+                      Text {
+                          color: "#CCCCCC";
+                          //font.pixelSize: 16;
+                          text: available_bikes + ' ';
+                          horizontalAlignment: Text.AlignRight;
+                          font.pointSize: 15
+                      }
+                      Rectangle {
+                        id: bikeBar
+                        width: 0.5*innerCircle.width*available_bikes/(available_bikes+available_bike_stands);
+                        height: 0.1*innerCircle.width;
+                        color: "#444444";
+                      }
+                      Rectangle {
+                        id: standsBar
+                        width: 0.5*innerCircle.width*available_bike_stands/(available_bikes+available_bike_stands);
+                        height: 0.1*innerCircle.width;
+                        color: "#CCCCCC";
+                      }
+                      Text {
+                          color: "#CCCCCC";
+                          text: ' ' + available_bike_stands;
+                          horizontalAlignment: Text.AlignLeft;
+                          font.pointSize: 15
+                      }
+                    }
+                    Row {
+                      id: barLabels
+                      width : busyBar.width// 0.8*innerCircle.width;
+                      anchors.horizontalCenter: parent.horizontalCenter;
+                      //spacing: 0.4*innerCircle.width
+                      /*Image {
+                        id: bikesIcon
+                        source: "../assets/bikes.svg";
+                        height: 16;
+                        Layout.fillHeight: true
+                        Layout.alignment: Qt.AlignLeft
+                        width: height;
+                      Item {
+                          width: barLabels.width-bikesIcon.width-standsIcon.width;
+                          height: 10
+                          Layout.fillWidth: true
+                          Layout.alignment: Qt.AlignHCenter
+                      }
+                      }
+                      Image {
+                        id: standsIcon
+                        source: "../assets/stands.svg";
+                        height: 16;
+                        Layout.fillHeight: true
+                        Layout.alignment: Qt.AlignRight
+                        width: height;
+                      }*/
+                      Text {
+                          id: bikesLabel
+                          color: "#CCCCCC";
+                          font.pointSize: 15;
+                          text: "Bikes";
+                          Layout.fillHeight: true
+                          Layout.alignment: Qt.AlignLeft
+                          horizontalAlignment: Text.AlignLeft;
+                      }
+
+                      Item {
+                          width: barLabels.width-bikesLabel.contentWidth-standsLabel.contentWidth;
+                          height: 10
+                          Layout.fillWidth: true
+                          Layout.alignment: Qt.AlignHCenter
+                      }
+                      Text {
+                          id: standsLabel
+                          color: "#CCCCCC";
+                          font.pointSize: 15;
+                          text: "Stands";
+                          Layout.fillHeight: true
+                          Layout.alignment: Qt.AlignRight
+                          horizontalAlignment: Text.AlignRight;
+                      }
+
+                    }
+
+
+                    /*Text{
+                      anchors.horizontalCenter: parent.horizontalCenter;
+                      color: "white";
+                      horizontalAlignment: Text.AlignHCenter;
+                      text: "Bikes: " + available_bikes + "<br>Stands:" + available_bike_stands;
+                      font.pointSize: 8;
+                    }*/
+                    }
+
+
+                    }
+                    }
+
+              }
+              }
+
+
+
+          }
 
           }
 
@@ -136,16 +313,24 @@ MainView {
           id : loadingDialog
           anchors.fill: parent
           color: '#888888'
-          visible : false
-          Text {
-                  anchors.fill: parent
-                  width: 0.8* parent.width
-                  text: "Loading<br>station<br>information."
-                  font.pointSize: 24
-                  color: "white"
-                  horizontalAlignment:Text.AlignHCenter
-                  verticalAlignment: Text.AlignVCenter
-          }
+          opacity: 0.8;
+          visible : true
+          //Column {
+            //anchors.fill: parent
+            /*Text {
+                    anchors.fill: parent
+                    width: 0.8* parent.width
+                    text: "Loading<br>station<br>information."
+                    font.pointSize: 24
+                    color: "white"
+                    horizontalAlignment:Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+            }*/
+            BusyIndicator {
+                anchors.centerIn: parent
+                running: loadingDialog.visible
+            }
+          //}
           }
 
 
@@ -179,11 +364,6 @@ MainView {
               onTriggered: stackview.currentIndex = 2;
               },
               Action {
-                  iconName: 'view-refresh'
-                  text: i18n.tr('Rotate to north')
-                  onTriggered: map.bearing = 0
-              },
-              Action {
                   iconName: 'camera-grid'
                   text: i18n.tr('Update Location')
                   onTriggered: stackview.currentIndex = 0;
@@ -191,12 +371,6 @@ MainView {
           ]
       }
 
-
-
-      ListModel {
-          id: veloModel
-
-          }
 
 
           ColumnLayout {
@@ -238,12 +412,38 @@ MainView {
             title: i18n.tr("Settings")
 
 
+
             trailingActionBar.actions: [
 
                 Action {
+                  function loadFromServer(){
+                          loadingDialog.visible =  true
+
+                          veloModel.clear()
+
+                          python.call('main.AllInfo', [root.contractName], function(returnValue) {
+
+                            for (var i = 0; i < returnValue.length; i = i+1)  {
+
+                                veloModel.append({"number": returnValue[i]['number'],
+                                                  "name":returnValue[i]['address'],
+                                                  "available_bikes": returnValue[i]['available_bikes'],
+                                                  "available_bike_stands": returnValue[i]['available_bike_stands'],
+                                                  "lat": returnValue[i]['position']['lat'],
+                                                  "lng": returnValue[i]['position']['lng'],
+                                                  "status": returnValue[i]['status'],})
+                            }
+
+
+                          })
+                          loadingDialog.visible =  false
+                      }
                     iconName: 'tick'
-                    text: i18n.tr('Rotate to north')
-                    onTriggered: stackview.currentIndex = 3;
+                    text: i18n.tr('Check')
+                    onTriggered: {
+                      stackview.currentIndex = 0;
+                      loadFromServer()
+                    }
                 }
             ]
             }
@@ -313,65 +513,38 @@ MainView {
 
             addImportPath(Qt.resolvedUrl('./'));
 
-
             importModule('main', function() {
-            python.call('main.package_info', [], function(returnValue) {
-            console.log(returnValue)
-            })
-
-            });
-
-            importModule('main', function() {
-            python.call('main.AllInfo', [settings.contractName], function(returnValue) {
-              console.log('PyOtherSide version: '  +  pluginVersion());
-              console.log('Python  version: '  +  pythonVersion());
+            python.call('main.AllInfo', [root.contractName], function(returnValue) {
 
               for (var i = 0; i < returnValue.length; i = i+1)  {
 
-                  veloModel.append({"number": returnValue[i]['number'], "name":returnValue[i]['address'], "available_bikes": returnValue[i]['available_bikes'], "available_bike_stands": returnValue[i]['available_bike_stands']})
-
-                  var item = Qt.createQmlObject('import QtQuick 2.7; import QtLocation 5.3; MapQuickItem{}', map, "dynamic");
-                  item.coordinate = QtPositioning.coordinate(returnValue[i]['position']['lat'], returnValue[i]['position']['lng']);
-                  if (returnValue[i]['status'] == "OPEN") {
-                    item.visible = true
-                  } else {
-                    item.visible = true
-                  }
-                  var rectSize = "6"
-
-                  var textString = "<b>" + returnValue[i]['number'] + "</b>" +'<br>'+returnValue[i]['name'].split(" - ")[1].slice(0,8)+ "<br>Bikes: " + returnValue[i]['available_bikes'] + "<br>Stands: " + returnValue[i]['available_bike_stands']
-                  var rectText = 'Text{rotation: 45;color: "white"; horizontalAlignment: Text.AlignHCenter; anchors.centerIn: parent; text:"'+textString+'";}'
-                  var backgroundcirc = 'Rectangle{width: units.gu('+rectSize+'*2); height: width; radius: width/2; anchors.bottom: parent.verticalCenter; anchors.left: parent.horizontalCenter; border.color:"#FFFFFF"; border.width:2; transformOrigin: Item.BottomLeft; rotation: -45; }'
-                  var backgroundrect = 'Rectangle{width: units.gu('+rectSize+'*1.1); height: width; radius: width/20; anchors.bottom: parent.verticalCenter; anchors.left: parent.horizontalCenter; border.color:"#FFFFFF"; border.width:2; transformOrigin: Item.BottomLeft; rotation: -45; }'
-
-                  var circ = 'Rectangle{width: units.gu('+rectSize+'*2); height: width; radius: width/2; anchors.bottom: parent.verticalCenter; anchors.left: parent.horizontalCenter; color:"#666666"; transformOrigin: Item.BottomLeft; rotation: -45; ' +rectText+ '}'
-                  var rect = 'Rectangle{width: units.gu('+rectSize+'*1.1); height: width; radius: width/20; anchors.bottom: parent.verticalCenter; anchors.left: parent.horizontalCenter; color:"#666666"; transformOrigin: Item.BottomLeft; rotation: -45; }'
-
-                  var stationElement = Qt.createQmlObject('import QtQuick 2.7; Item{'+ backgroundcirc + backgroundrect + rect + circ + ' }', map);
-                  item.sourceItem = stationElement
-                  item.zoomLevel = 17;
-                  map.addMapItem(item);
-
-                  var item = Qt.createQmlObject('import QtQuick 2.7; import QtLocation 5.3;import QtPositioning 5.6; MapQuickItem{id: point; coordinate : map.center;}', map, "dynamic");
-                  var circle = Qt.createQmlObject('import QtQuick 2.7; Rectangle{ anchors.centerIn: parent; width: units.gu(2); height: width; border.color:"white"; border.width: 1; radius: width/2; color:"red";}', map);
-                  item.sourceItem = circle;
-
-                  /*map.addMapItem(item);*/
-
+                  veloModel.append({"number": returnValue[i]['number'],
+                                    "name":returnValue[i]['address'],
+                                    "available_bikes": returnValue[i]['available_bikes'],
+                                    "available_bike_stands": returnValue[i]['available_bike_stands'],
+                                    "lat": returnValue[i]['position']['lat'],
+                                    "lng": returnValue[i]['position']['lng'],
+                                    "status": returnValue[i]['status'],})
               }
 
-              loadingDialog.visible = false
+              loadingDialog.visible =  false
+
+              var item = Qt.createQmlObject('import QtQuick 2.7; import QtLocation 5.3;import QtPositioning 5.6; MapQuickItem{id: point; coordinate : map.center;}', map, "dynamic");
+              var circle = Qt.createQmlObject('import QtQuick 2.7; Rectangle{ anchors.centerIn: parent; width: units.gu(2); height: width; border.color:"white"; border.width: 1; radius: width/2; color:"red";}', map);
+              item.sourceItem = circle;
+
+              /*map.addMapItem(item);*/
+
 
             })
 
             });
-
-
 
             }
         onError: {
             console.log('python error: ' + traceback);
         }
+
     }
 
     }
@@ -380,6 +553,7 @@ MainView {
       id: settings
       property var contractName: 'bruxelles';
     }
+
 
     Component.onDestruction: {
             settings.contractName = root.contractName

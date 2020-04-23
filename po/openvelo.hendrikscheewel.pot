@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-22 16:38+0000\n"
+"POT-Creation-Date: 2020-04-23 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:98
+#: ../qml/Main.qml:96
 msgid "Map"
 msgstr ""
 
-#: ../qml/Main.qml:103 ../qml/Main.qml:178 ../qml/Main.qml:238
+#: ../qml/Main.qml:101 ../qml/Main.qml:363 ../qml/Main.qml:412
 msgid "Settings"
 msgstr ""
 
-#: ../qml/Main.qml:115 ../qml/Main.qml:188
+#: ../qml/Main.qml:113 ../qml/Main.qml:368
 msgid "Update Location"
 msgstr ""
 
-#: ../qml/Main.qml:173
+#: ../qml/Main.qml:358
 msgid "List"
 msgstr ""
 
-#: ../qml/Main.qml:183 ../qml/Main.qml:245
-msgid "Rotate to north"
+#: ../qml/Main.qml:442
+msgid "Check"
 msgstr ""
 
-#: ../qml/Main.qml:290
+#: ../qml/Main.qml:490
 msgid "Rotate to map"
 msgstr ""
 
