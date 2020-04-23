@@ -2,8 +2,8 @@
 
 OpenVelo allows you to display information on bike/station availability of several public bike-sharing schemes on your [Ubuntu Touch](https://ubuntu-touch.io/) device. Currently the app delivers information for sharing schemes in Amiens, Besancon, Brisbane, Bruxelles, Cergy-pontoise, Creteil, Dublin, Lillestrom, Ljubljana, Lund, Luxembourg, Lyon, Marseille, Mulhouse, Namur, Nancy, Nantes, Rouen, Santander, Seville, Toulouse, Toyama, Valence, Vilnius.
 
-![Map view](screenshots/map_high_zoom.png "Station Map" =250)
-![List view](screenshots/list.png "Station List" =250)
+![Map view](screenshots/map_high_zoom.png "Station Map" =250x)
+![List view](screenshots/list.png "Station List" =250x)
 
 # Development
 Build and run using [clickable](http://clickable.bhdouglass.com).
