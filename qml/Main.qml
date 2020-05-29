@@ -231,34 +231,12 @@ MainView {
                       id: barLabels
                       width : busyBar.width
                       anchors.horizontalCenter: parent.horizontalCenter;
-                      //spacing: 0.4*innerCircle.width
-                      /*Image {
-                        id: bikesIcon
-                        source: "../assets/bikes.svg";
-                        height: 16;
-                        Layout.fillHeight: true
-                        Layout.alignment: Qt.AlignLeft
-                        width: height;
-                      Item {
-                          width: barLabels.width-bikesIcon.width-standsIcon.width;
-                          height: 10
-                          Layout.fillWidth: true
-                          Layout.alignment: Qt.AlignHCenter
-                      }
-                      }
-                      Image {
-                        id: standsIcon
-                        source: "../assets/stands.svg";
-                        height: 16;
-                        Layout.fillHeight: true
-                        Layout.alignment: Qt.AlignRight
-                        width: height;
-                      }*/
+
                       Text {
                           id: bikesLabel
                           color: "#CCCCCC";
                           font.pointSize: 15;
-                          text: "Bikes";
+                          text: i18n.tr("Bikes");
                           Layout.fillHeight: true
                           Layout.alignment: Qt.AlignLeft
                           horizontalAlignment: Text.AlignLeft;
@@ -274,7 +252,7 @@ MainView {
                           id: standsLabel
                           color: "#CCCCCC";
                           font.pointSize: 15;
-                          text: "Stands";
+                          text: i18n.tr("Stands");
                           Layout.fillHeight: true
                           Layout.alignment: Qt.AlignRight
                           horizontalAlignment: Text.AlignRight;
@@ -334,7 +312,7 @@ MainView {
           Button{
             id : centerAtPosition
             width: parent.width/3
-            text: 'Center'
+            text: i18n.tr("Center")
             onClicked: map.center = point.coordinate
           }
           Button{
@@ -374,8 +352,13 @@ MainView {
               onTriggered: stackview.currentIndex = 2;
               },
               Action {
+                  iconName: 'reload'
+                  text: i18n.tr('Reload from server');
+                  onTriggered: python.loadFromServer();
+              },
+              Action {
                   iconName: 'camera-grid'
-                  text: i18n.tr('Update Location')
+                  text: i18n.tr('Go to map')
                   onTriggered: stackview.currentIndex = 0;
               }
           ]
@@ -400,8 +383,8 @@ MainView {
                             id: layout
                             title.text: "<b>"+number+"</b> "+name.split(" - ")[0]
                             title.color: "#888888";
-                            subtitle.text: "Address: "+name.split(" - ")[1]
-                            summary.text: "Bikes: "+available_bikes+", Stands: "+available_bike_stands
+                            subtitle.text: i18n.tr("Address: ")+name.split(" - ")[1]
+                            summary.text: i18n.tr("Bikes")+": "+available_bikes+", "+ i18n.tr("Stands")+": "+available_bike_stands
                         }
                     }
 
@@ -470,12 +453,11 @@ MainView {
 
      Page {
          anchors.fill: parent
-
          header: PageHeader {
              trailingActionBar.actions: [
                  Action {
                      iconName: 'back'
-                     text: i18n.tr('Rotate to map')
+                     text: i18n.tr('Return to map')
                      onTriggered: stackview.currentIndex = 0;
                  }
              ]
@@ -484,7 +466,7 @@ MainView {
       Text {
               anchors.fill: parent
               width: 0.8* parent.width
-              text: "Please restart<br>this app to load<br>station information."
+              text: i18n.tr("Please restart<br>this app to load<br>station information.")
               font.pointSize: 24
               color: "gray"
               horizontalAlignment:Text.AlignHCenter
