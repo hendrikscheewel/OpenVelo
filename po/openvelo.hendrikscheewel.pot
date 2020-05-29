@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-29 12:46+0000\n"
+"POT-Creation-Date: 2020-05-29 13:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Map"
 msgstr ""
 
-#: ../qml/Main.qml:102 ../qml/Main.qml:386 ../qml/Main.qml:465
+#: ../qml/Main.qml:102 ../qml/Main.qml:386 ../qml/Main.qml:471
 msgid "Settings"
 msgstr ""
 
@@ -33,11 +33,11 @@ msgstr ""
 msgid "Update Location"
 msgstr ""
 
-#: ../qml/Main.qml:249 ../qml/Main.qml:448
+#: ../qml/Main.qml:249 ../qml/Main.qml:454
 msgid "Bikes"
 msgstr ""
 
-#: ../qml/Main.qml:265 ../qml/Main.qml:448
+#: ../qml/Main.qml:265 ../qml/Main.qml:454
 msgid "Stands"
 msgstr ""
 
@@ -61,19 +61,19 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:447
+#: ../qml/Main.qml:453
 msgid "Address: "
 msgstr ""
 
-#: ../qml/Main.qml:473
+#: ../qml/Main.qml:479
 msgid "Check"
 msgstr ""
 
-#: ../qml/Main.qml:521
+#: ../qml/Main.qml:527
 msgid "Return to map"
 msgstr ""
 
-#: ../qml/Main.qml:530
+#: ../qml/Main.qml:536
 msgid "Please restart<br>this app to load<br>station information."
 msgstr ""
 

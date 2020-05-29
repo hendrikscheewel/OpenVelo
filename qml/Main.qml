@@ -438,6 +438,12 @@ MainView {
                         id:veloDelegate
                         color: Suru.backgroundColor
                         height: layout.height + (divider.visible ? divider.height : 0)
+                        onClicked: {
+                            listView.currentIndex = index
+                            stackview.currentIndex = 0
+                            map.center =  QtPositioning.coordinate(lat, lng)
+                            map.zoomLevel =  15
+                        }
                         ListItemLayout {
                             id: layout
                             title.color: Suru.foregroundColor;
