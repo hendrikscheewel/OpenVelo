@@ -24,12 +24,7 @@ import io.thp.pyotherside 1.3
 import QtLocation 5.3
 import QtPositioning 5.6
 import Ubuntu.DownloadManager 1.2
-
-import Ubuntu.Components 1.3 as UITK
 import QtQuick.Controls.Suru 2.2
-
-
-
 
 
 
@@ -73,14 +68,6 @@ MainView {
                        'vilnius': {'lat': 54.688745485945944, 'lng': 25.282028273783784}};
 
     property var contracts : Object.keys(contractInfo);
-    property color hf: Suru.foregroundColor
-    property color hb: Suru.backgroundColor
-
-    UITK.StyleHints {
-    foregroundColor: hf
-    backgroundColor: hb
-    }
-
 
 
     function capitalizeListItems(li) {
@@ -138,8 +125,17 @@ MainView {
 
         ListModel {
             id: veloModel
-
+            ListElement {
+                number: 0
+                name: ""
+                available_bikes:0
+                available_bike_stands: 0
+                lat: 0.0
+                lng: 0.0
+                status: ""
             }
+            }
+
           MapItemView {
               model: veloModel
               delegate: MapQuickItem {
@@ -407,13 +403,36 @@ MainView {
 
           ColumnLayout {
               anchors.fill: parent
+              Rectangle {
+                  height: nameFilter.height
+                  width: parent.width
+                  anchors {
+                        left: parent.left
+                        top: parent.top
+                        right: parent.right
+                    }
+
+                    TextField {
+                        id: nameFilter
+                        placeholderText: qsTr(i18n.tr("Search"))
+                        width: parent.width
+                    }
+            }
+
+            SortFilterModel {
+                id: veloSortFilterModel
+                model: veloModel
+                sortCaseSensitivity: Qt.CaseInsensitive;
+                filter.property: 'name';
+                filter.pattern: RegExp("" + nameFilter.text + "\\s?",'i');
+            }
 
               ListView {
                   id: listView
                   flickableDirection: Flickable.VerticalFlick
                   boundsBehavior: Flickable.StopAtBounds
                   clip: true
-                  model: veloModel
+                  model: veloSortFilterModel
 
                   delegate: ListItem {
                         id:veloDelegate
@@ -432,7 +451,6 @@ MainView {
 
                   Layout.fillWidth: true
                   Layout.fillHeight: true
-
                   ScrollBar.vertical: ScrollBar {}
               }
           }
@@ -460,6 +478,7 @@ MainView {
                 }
             ]
             }
+
 
 
      Rectangle {
@@ -528,7 +547,7 @@ MainView {
 
             importModule('main', function() {
             python.call('main.AllInfo', [root.contractName], function(returnValue) {
-
+            veloModel.clear()
               for (var i = 0; i < returnValue.length; i = i+1)  {
 
                   veloModel.append({"number": returnValue[i]['number'],
@@ -567,6 +586,7 @@ MainView {
                                         "lng": returnValue[i]['position']['lng'],
                                         "status": returnValue[i]['status'],})
                   }
+
 
 
                 })
