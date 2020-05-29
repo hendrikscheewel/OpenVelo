@@ -3,46 +3,78 @@
 # This file is distributed under the same license as the openvelo.hendrikscheewel package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 12:31+0000\n"
-"PO-Revision-Date: 2020-04-23 20:41+0000\n"
+"POT-Creation-Date: 2020-05-29 13:06+0000\n"
+"PO-Revision-Date: 2020-05-29 21:22+0200\n"
 "Last-Translator: Anne017 <anneonyme017@openmailbox.org>\n"
+"Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:96
+#: ../qml/Main.qml:97
 msgid "Map"
 msgstr "Carte"
 
-#: ../qml/Main.qml:101 ../qml/Main.qml:373 ../qml/Main.qml:422
+#: ../qml/Main.qml:102 ../qml/Main.qml:386 ../qml/Main.qml:471
 msgid "Settings"
 msgstr "Paramètres"
 
-#: ../qml/Main.qml:106
+#: ../qml/Main.qml:107
 msgid "Reload from Server"
 msgstr "Actualiser à partir du serveur"
 
-#: ../qml/Main.qml:111 ../qml/Main.qml:378
+#: ../qml/Main.qml:112
 msgid "Update Location"
 msgstr "Mettre à jour la position"
 
-#: ../qml/Main.qml:368
+#: ../qml/Main.qml:249 ../qml/Main.qml:454
+msgid "Bikes"
+msgstr "Vélos"
+
+#: ../qml/Main.qml:265 ../qml/Main.qml:454
+msgid "Stands"
+msgstr "Stations"
+
+#: ../qml/Main.qml:339
+msgid "Center"
+msgstr "Centre"
+
+#: ../qml/Main.qml:381
 msgid "List"
 msgstr "Liste"
 
-#: ../qml/Main.qml:430
+#: ../qml/Main.qml:391
+msgid "Reload from server"
+msgstr "Actualiser à partir du serveur"
+
+#: ../qml/Main.qml:396
+msgid "Go to map"
+msgstr "Consulter la carte"
+
+#: ../qml/Main.qml:417
+msgid "Search"
+msgstr "Rechercher"
+
+#: ../qml/Main.qml:453
+msgid "Address: "
+msgstr "Adresse : "
+
+#: ../qml/Main.qml:479
 msgid "Check"
 msgstr "Vérifier"
 
-#: ../qml/Main.qml:478
-msgid "Rotate to map"
-msgstr "Faire pivoter la carte"
+#: ../qml/Main.qml:527
+msgid "Return to map"
+msgstr "Retourner à la carte"
+
+#: ../qml/Main.qml:536
+msgid "Please restart<br>this app to load<br>station information."
+msgstr "Veuillez redémarrer<br>cette application pour charger<br>les informations sur la station."
 
 #: OpenVelo.desktop.in.h:1
 msgid "OpenVelo"
