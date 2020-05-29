@@ -25,6 +25,11 @@ import QtLocation 5.3
 import QtPositioning 5.6
 import Ubuntu.DownloadManager 1.2
 
+import Ubuntu.Components 1.3 as UITK
+import QtQuick.Controls.Suru 2.2
+
+
+
 
 
 
@@ -68,6 +73,15 @@ MainView {
                        'vilnius': {'lat': 54.688745485945944, 'lng': 25.282028273783784}};
 
     property var contracts : Object.keys(contractInfo);
+    property color hf: Suru.foregroundColor
+    property color hb: Suru.backgroundColor
+
+    UITK.StyleHints {
+    foregroundColor: hf
+    backgroundColor: hb
+    }
+
+
 
     function capitalizeListItems(li) {
       var i;
@@ -289,7 +303,7 @@ MainView {
           Rectangle{
           id : loadingDialog
           anchors.fill: parent
-          color: '#888888'
+          color: Suru.backgroundColor
           opacity: 0.8;
           visible : true
 
@@ -301,25 +315,50 @@ MainView {
 
           Row {
             width: parent.width
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom;
+            anchors.horizontalCenter: parent.horizontalCenter;
           Button{
             id : zoomOut
-            width: parent.width/3
-            text: '-'
-            onClicked: map.zoomLevel = map.zoomLevel - 1
+            width: parent.width/3;
+
+            onClicked: map.zoomLevel = map.zoomLevel - 1;
+            background: Rectangle {
+                color: Suru.backgroundColor;
+            }
+            contentItem: Text {
+                text: '-';
+                color: Suru.foregroundColor;
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
             }
           Button{
             id : centerAtPosition
-            width: parent.width/3
-            text: i18n.tr("Center")
-            onClicked: map.center = point.coordinate
+            width: parent.width/3;
+            onClicked: map.center = point.coordinate;
+            background: Rectangle {
+                color: Suru.backgroundColor;
+            }
+            contentItem: Text {
+                text: i18n.tr("Center");
+                color: Suru.foregroundColor;
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
           }
           Button{
             id : zoomIn
-            width: parent.width/3
-            text: '+'
-            onClicked: map.zoomLevel = map.zoomLevel + 1
+            width: parent.width/3;
+            onClicked: map.zoomLevel = map.zoomLevel + 1;
+            background: Rectangle {
+                color: Suru.backgroundColor;
+            }
+            contentItem: Text {
+                text: '+';
+                color: Suru.foregroundColor;
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
           }
           }
 
@@ -378,11 +417,14 @@ MainView {
 
                   delegate: ListItem {
                         id:veloDelegate
+                        color: Suru.backgroundColor
                         height: layout.height + (divider.visible ? divider.height : 0)
                         ListItemLayout {
                             id: layout
+                            title.color: Suru.foregroundColor;
+                            subtitle.color: Suru.foregroundColor;
+                            summary.color: Suru.foregroundColor;
                             title.text: "<b>"+number+"</b> "+name.split(" - ")[0]
-                            title.color: "#888888";
                             subtitle.text: i18n.tr("Address: ")+name.split(" - ")[1]
                             summary.text: i18n.tr("Bikes")+": "+available_bikes+", "+ i18n.tr("Stands")+": "+available_bike_stands
                         }
