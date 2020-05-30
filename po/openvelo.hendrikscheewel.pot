@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-29 13:06+0000\n"
+"POT-Creation-Date: 2020-05-30 20:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,63 +17,63 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:97
+#: ../qml/Main.qml:94
 msgid "Map"
 msgstr ""
 
-#: ../qml/Main.qml:102 ../qml/Main.qml:386 ../qml/Main.qml:471
+#: ../qml/Main.qml:99 ../qml/Main.qml:382 ../qml/Main.qml:491
 msgid "Settings"
 msgstr ""
 
-#: ../qml/Main.qml:107
+#: ../qml/Main.qml:104
 msgid "Reload from Server"
 msgstr ""
 
-#: ../qml/Main.qml:112
+#: ../qml/Main.qml:109
 msgid "Update Location"
 msgstr ""
 
-#: ../qml/Main.qml:249 ../qml/Main.qml:454
+#: ../qml/Main.qml:246 ../qml/Main.qml:474
 msgid "Bikes"
 msgstr ""
 
-#: ../qml/Main.qml:265 ../qml/Main.qml:454
+#: ../qml/Main.qml:262 ../qml/Main.qml:474
 msgid "Stands"
 msgstr ""
 
-#: ../qml/Main.qml:339
+#: ../qml/Main.qml:336
 msgid "Center"
 msgstr ""
 
-#: ../qml/Main.qml:381
+#: ../qml/Main.qml:377
 msgid "List"
 msgstr ""
 
-#: ../qml/Main.qml:391
+#: ../qml/Main.qml:387
 msgid "Reload from server"
 msgstr ""
 
-#: ../qml/Main.qml:396
+#: ../qml/Main.qml:392
 msgid "Go to map"
 msgstr ""
 
-#: ../qml/Main.qml:417
+#: ../qml/Main.qml:419
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:453
+#: ../qml/Main.qml:473
 msgid "Address: "
 msgstr ""
 
-#: ../qml/Main.qml:479
+#: ../qml/Main.qml:499
 msgid "Check"
 msgstr ""
 
-#: ../qml/Main.qml:527
+#: ../qml/Main.qml:547
 msgid "Return to map"
 msgstr ""
 
-#: ../qml/Main.qml:536
+#: ../qml/Main.qml:556
 msgid "Please restart<br>this app to load<br>station information."
 msgstr ""
 

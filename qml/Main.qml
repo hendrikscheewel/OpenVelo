@@ -26,8 +26,6 @@ import QtPositioning 5.6
 import Ubuntu.DownloadManager 1.2
 import QtQuick.Controls.Suru 2.2
 
-
-
 MainView {
     id: root
     objectName: 'mainView'
@@ -79,10 +77,8 @@ MainView {
     }
 
     property var contractsCapital : capitalizeListItems(contracts)
-
-
     property var contractName : settings.contractName
-
+    property var favoriteStations: settings.favoriteStations;
 
         StackLayout {
             id: stackview
@@ -375,7 +371,6 @@ MainView {
       id: secondPage
       anchors.fill: parent
 
-
       header: PageHeader {
 
           title: i18n.tr('List')
@@ -402,10 +397,14 @@ MainView {
 
 
           ColumnLayout {
+              spacing: 0
               anchors.fill: parent
               Rectangle {
                   height: nameFilter.height
                   width: parent.width
+                  color: Suru.backgroundColor
+                  border.color: Suru.foregroundColor
+                  border.width: 2
                   anchors {
                         left: parent.left
                         top: parent.top
@@ -414,8 +413,18 @@ MainView {
 
                     TextField {
                         id: nameFilter
+                        color: Suru.foregroundColor
+                        font.pointSize: 30
                         placeholderText: qsTr(i18n.tr("Search"))
                         width: parent.width
+                        background: Rectangle {
+                            color: Suru.backgroundColor
+                        }
+                        /*UbuntuComponents.Icon {
+                        width: 10
+                        height: 10
+                        name: "search"
+                    }*/
                     }
             }
 
@@ -433,6 +442,7 @@ MainView {
                   boundsBehavior: Flickable.StopAtBounds
                   clip: true
                   model: veloSortFilterModel
+                  highlight: highlight
 
                   delegate: ListItem {
                         id:veloDelegate
@@ -444,6 +454,15 @@ MainView {
                             map.center =  QtPositioning.coordinate(lat, lng)
                             map.zoomLevel =  15
                         }
+                        /*onPressAndHold: {
+                            if (root.favoriteStations.indexOf(index) > -1 ) {
+                                root.favoriteStations.splice(index-1,1);
+                            }
+                            else {
+                                root.favoriteStations.push(index)
+                            }
+                            console.log(root.favoriteStations)
+                        }*/
                         ListItemLayout {
                             id: layout
                             title.color: Suru.foregroundColor;
@@ -469,8 +488,6 @@ MainView {
         header: PageHeader {
             id: header
             title: i18n.tr("Settings")
-
-
 
             trailingActionBar.actions: [
 
@@ -505,7 +522,7 @@ MainView {
                 width: parent.width
                 ButtonGroup.group: buttonGroup
                 text: modelData
-                checked: root.contractsCapital[index] == root.contractName//root.contractsCapital[index] == root.contractName//index == 6//
+                checked: root.contractsCapital[index] == root.contractName
                 onClicked: {
                         console.log(root.contractsCapital[index] + ' selected')
                         root.contractName = root.contractsCapital[index]
@@ -540,8 +557,6 @@ MainView {
               verticalAlignment: Text.AlignVCenter
       }
       }
-
-
 
 
     Python {
@@ -593,23 +608,22 @@ MainView {
                                         "status": returnValue[i]['status'],})
                   }
 
-
-
                 })
                 loadingDialog.visible =  false
             }
-
-    }
+        }
 
     }
 
     Settings {
       id: settings
       property var contractName: 'bruxelles';
+      property var favoriteStations: [];
     }
 
 
     Component.onDestruction: {
             settings.contractName = root.contractName
+            settings.favoriteStations = root.favoriteStations
         }
 }
