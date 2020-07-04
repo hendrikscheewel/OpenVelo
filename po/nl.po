@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the openvelo.hendrikscheewel package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: openvelo.hendrikscheewel\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-30 20:51+0000\n"
+"PO-Revision-Date: 2020-07-04 14:03+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl\n"
+
+#: ../qml/Main.qml:94
+msgid "Map"
+msgstr "Kaart"
+
+#: ../qml/Main.qml:99 ../qml/Main.qml:382 ../qml/Main.qml:491
+msgid "Settings"
+msgstr "Instellingen"
+
+#: ../qml/Main.qml:104
+msgid "Reload from Server"
+msgstr "Herladen vanaf server"
+
+#: ../qml/Main.qml:109
+msgid "Update Location"
+msgstr "Locatie bijwerken"
+
+#: ../qml/Main.qml:246 ../qml/Main.qml:474
+msgid "Bikes"
+msgstr "Fietsen"
+
+#: ../qml/Main.qml:262 ../qml/Main.qml:474
+msgid "Stands"
+msgstr "Fietsenrekken"
+
+#: ../qml/Main.qml:336
+msgid "Center"
+msgstr "Centreren"
+
+#: ../qml/Main.qml:377
+msgid "List"
+msgstr "Lijst"
+
+#: ../qml/Main.qml:387
+msgid "Reload from server"
+msgstr "Herladen vanaf server"
+
+#: ../qml/Main.qml:392
+msgid "Go to map"
+msgstr "Ga naar kaart"
+
+#: ../qml/Main.qml:419
+msgid "Search"
+msgstr "Zoeken"
+
+#: ../qml/Main.qml:473
+msgid "Address: "
+msgstr "Adres: "
+
+#: ../qml/Main.qml:499
+msgid "Check"
+msgstr "Controleren"
+
+#: ../qml/Main.qml:547
+msgid "Return to map"
+msgstr "Terug naar kaart"
+
+#: ../qml/Main.qml:556
+msgid "Please restart<br>this app to load<br>station information."
+msgstr "Herstart<br>deze app om<br>stallingsinformatie te laden."
+
+#: OpenVelo.desktop.in.h:1
+msgid "OpenVelo"
+msgstr "OpenVelo"
