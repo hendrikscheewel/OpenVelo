@@ -17,27 +17,21 @@
 import json
 import urllib.request
 
-# def GetInfo(var):
-#     info = [i[var] for i in li]
-#     return(info)
+networks_url = "http://api.citybik.es/v2/networks?fields=id,name,location"
 
-# def GetLoc(var):
-#     if var == 'x':
-#         var = 'lat'
-#     if var == 'y':
-#         var = 'lng'
-#     coord = [j[var] for j in [i['position'] for i in li]]
-#     return(coord)
-
-def AllInfo(contract_name):	
-    urlData = 'https://api.jcdecaux.com/vls/v1/stations?apiKey=6d5071ed0d0b3b68462ad73df43fd9e5479b03d6&contract='+contract_name
-    webURL = urllib.request.urlopen(urlData)
+def load_data(url):
+    webURL = urllib.request.urlopen(url)
     data = webURL.read()
     encoding = webURL.info().get_content_charset('utf-8')
     li = json.loads(data.decode(encoding))
-    li = sorted(li, key=lambda k: k['number']) 
     return(li)
-    
-def package_info():
-    return("json Version:"+json.__version__+"|| urllib Path:"+urllib.__path__[0])
+
+def load_networks():
+    data = load_data(networks_url)['networks']
+    return(data)
+
+def load_stations(network_ID):
+    ID_url = "http://api.citybik.es/v2/networks/{ID}".format(ID=network_ID)
+    data = load_data(ID_url)['network']['stations']
+    return(data)
 

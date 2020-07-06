@@ -16,6 +16,7 @@
 
 import QtQuick 2.7
 import Ubuntu.Components 1.3
+import Ubuntu.Components 1.3 as UbuntuComponents
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
@@ -40,45 +41,12 @@ MainView {
     name: "osm"
     }
 
-    property var contractInfo : {'amiens': {'lat': 49.89343146619912, 'lng': 2.297113237744805},
-                       'besancon': {'lat': 47.23979510000001, 'lng': 6.025420200000001},
-                       'brisbane': {'lat': -27.47141017880795, 'lng': 153.0250157483445},
-                       'bruxelles': {'lat': 50.84322682279418, 'lng': 4.360707950690179},
-                       'cergy-pontoise': {'lat': 49.037306240004774, 'lng': 2.060685502658265},
-                       'creteil': {'lat': 48.78368079387765, 'lng': 2.4604914536676192},
-                       'dublin': {'lat': 53.345491890909074, 'lng': -6.264740490909093},
-                       'lillestrom': {'lat': 59.959140999999995, 'lng': 11.050151833333333},
-                       'ljubljana': {'lat': 46.05726988709677, 'lng': 14.509747612903224},
-                       'lund': {'lat': 55.70781944981111, 'lng': 13.199646972419036},
-                       'luxembourg': {'lat': 49.60923811044996, 'lng': 6.128290604781318},
-                       'lyon': {'lat': 45.759899198171524, 'lng': 4.851031146390814},
-                       'marseille': {'lat': 43.286037002902354, 'lng': 5.381312737290675},
-                       'mulhouse': {'lat': 47.74718901912745, 'lng': 7.336393379959304},
-                       'namur': {'lat': 50.46329410344827, 'lng': 4.862059644827587},
-                       'nancy': {'lat': 48.689073674659326, 'lng': 6.179954739185165},
-                       'nantes': {'lat': 47.21552205668433, 'lng': -1.554300720020954},
-                       'rouen': {'lat': 49.43713614831786, 'lng': 1.0914493828679648},
-                       'santander': {'lat': 43.46589772465013, 'lng': -3.807747886114248},
-                       'seville': {'lat': 37.389017383029795, 'lng': -5.977712213028738},
-                       'toulouse': {'lat': 43.60228733265252, 'lng': 1.4432994953266045},
-                       'toyama': {'lat': 36.69759243478261, 'lng': 137.20841069565216},
-                       'valence': {'lat': 39.47167040532542, 'lng': -0.3713211435362771},
-                       'vilnius': {'lat': 54.688745485945944, 'lng': 25.282028273783784}};
-
-    property var contracts : Object.keys(contractInfo);
-
-
-    function capitalizeListItems(li) {
-      var i;
-      for (i = 0; i < li.length; i++) {
-        li[i] = li[i].slice(0,1).toUpperCase() + li[i].slice(1);
-      }
-      return li
-    }
-
-    property var contractsCapital : capitalizeListItems(contracts)
-    property var contractName : settings.contractName
+    property var network_ID : settings.network_ID;
+    property var networkCenter: settings.networkCenter;
     property var favoriteStations: settings.favoriteStations;
+    property var currentLoc: QtPositioning.coordinate(networkCenter["latitude"], networkCenter["longitude"]);
+    property var currentDir: 0;
+    property var locationFix: false;
 
         StackLayout {
             id: stackview
@@ -94,11 +62,6 @@ MainView {
 
                     trailingActionBar.actions: [
                     Action {
-                        iconName: 'settings'
-                        text: i18n.tr('Settings')
-                        onTriggered: stackview.currentIndex = 2;
-                    },
-                    Action {
                         iconName: 'reload'
                         text: i18n.tr('Reload from Server');
                         onTriggered: python.loadFromServer();
@@ -107,6 +70,16 @@ MainView {
                         iconName: 'view-list-symbolic'
                         text: i18n.tr('Update Location')
                         onTriggered: stackview.currentIndex = 1;
+                    },
+                    Action {
+                        iconName: 'stock_website'
+                        text: i18n.tr('Select network')
+                        onTriggered: stackview.currentIndex = 2;
+                    },
+                    Action {
+                        iconName: 'info'
+                        text: i18n.tr('Info')
+                        onTriggered: stackview.currentIndex = 3;
                     }
                     ]
                 }
@@ -117,25 +90,26 @@ MainView {
         anchors.fill: parent
         plugin: mapPlugin
         zoomLevel: 13
-        center: QtPositioning.coordinate(root.contractInfo[root.contractName.toLowerCase()]['lat'], root.contractInfo[root.contractName.toLowerCase()]['lng'])
+        center: QtPositioning.coordinate(networkCenter["latitude"], networkCenter["longitude"]);
 
         ListModel {
             id: veloModel
             ListElement {
-                number: 0
-                name: ""
-                available_bikes:0
-                available_bike_stands: 0
-                lat: 0.0
-                lng: 0.0
-                status: ""
+                  empty_slots: 0
+                  free_bikes: 0
+                  station_ID: ""
+                  latitude: 0
+                  longitude: 0
+                  name: ""
+                  timestamp: ""
+                  bg: ""
             }
             }
 
           MapItemView {
               model: veloModel
               delegate: MapQuickItem {
-                  coordinate: QtPositioning.coordinate(lat, lng)
+                  coordinate: QtPositioning.coordinate(latitude, longitude)
                   zoomLevel: if (map.zoomLevel <  16) {16} else {0}
 
                   sourceItem:Item {
@@ -165,7 +139,7 @@ MainView {
                        radius: width/20;
                        anchors.bottom: parent.verticalCenter;
                        anchors.left: parent.horizontalCenter;
-                       color:"#666666";
+                       color: bg;
                        transformOrigin: Item.BottomLeft;
                        rotation: -45;
                      }
@@ -177,7 +151,7 @@ MainView {
                        radius: width/2;
                        anchors.bottom: parent.verticalCenter;
                        anchors.left: parent.horizontalCenter;
-                       color:"#666666";
+                       color:bg;
                        transformOrigin: Item.BottomLeft;
                        rotation: -45;
 
@@ -191,10 +165,13 @@ MainView {
                       anchors.horizontalCenter: parent.horizontalCenter;
                       color: "white";
                       horizontalAlignment: Text.AlignHCenter;
-                      text: number;
-                      font.bold :true;
+                      text: name//.slice(0, 12);
+                      wrapMode: Text.Wrap
+                      maximumLineCount: 2
+                      font.pointSize: units.gu(1)
+                      width: 0.8*innerCircle.width
                     }
-                    Text{
+                    /*Text{
                       width: 0.8*innerCircle.width
                       maximumLineCount: 2
                       anchors.horizontalCenter: parent.horizontalCenter;
@@ -203,34 +180,33 @@ MainView {
                       text: name.split(' - ')[0]//.slice(0, 12) + '...';
                       wrapMode: Text.Wrap
                       font.pointSize: 20
-                    }
+                  }*/
                     Row {
                       id: busyBar
                       anchors.horizontalCenter: parent.horizontalCenter;
                       Text {
                           color: "#CCCCCC";
-                          //font.pixelSize: 16;
-                          text: available_bikes + ' ';
+                          text: free_bikes + ' ';
                           horizontalAlignment: Text.AlignRight;
-                          font.pointSize: 15
+                          font.pointSize: units.gu(1)
                       }
                       Rectangle {
                         id: bikeBar
-                        width: 0.5*innerCircle.width*available_bikes/(available_bikes+available_bike_stands);
+                        width: 0.5*innerCircle.width*free_bikes/(free_bikes+empty_slots);
                         height: 0.1*innerCircle.width;
                         color: "#444444";
                       }
                       Rectangle {
                         id: standsBar
-                        width: 0.5*innerCircle.width*available_bike_stands/(available_bikes+available_bike_stands);
+                        width: 0.5*innerCircle.width*empty_slots/(free_bikes+empty_slots);
                         height: 0.1*innerCircle.width;
                         color: "#CCCCCC";
                       }
                       Text {
                           color: "#CCCCCC";
-                          text: ' ' + available_bike_stands;
+                          text: ' ' + empty_slots;
                           horizontalAlignment: Text.AlignLeft;
-                          font.pointSize: 15
+                          font.pointSize: units.gu(1)
                       }
                     }
                     Row {
@@ -241,7 +217,7 @@ MainView {
                       Text {
                           id: bikesLabel
                           color: "#CCCCCC";
-                          font.pointSize: 15;
+                          font.pointSize: units.gu(1)
                           text: i18n.tr("Bikes");
                           Layout.fillHeight: true
                           Layout.alignment: Qt.AlignLeft
@@ -257,7 +233,7 @@ MainView {
                       Text {
                           id: standsLabel
                           color: "#CCCCCC";
-                          font.pointSize: 15;
+                          font.pointSize: units.gu(1)
                           text: i18n.tr("Stands");
                           Layout.fillHeight: true
                           Layout.alignment: Qt.AlignRight
@@ -277,7 +253,7 @@ MainView {
 
           MapQuickItem{
             id: point;
-            coordinate : QtPositioning.coordinate(root.contractInfo[root.contractName.toLowerCase()]['lat'], root.contractInfo[root.contractName.toLowerCase()]['lng']);
+            coordinate : root.currentLoc;
             sourceItem:Rectangle{
               anchors.centerIn: parent;
               width: units.gu(5);
@@ -286,6 +262,16 @@ MainView {
               border.width: 1;
               radius: width/2;
               color:"red";
+              rotation: root.currentDir;
+
+              /*UbuntuComponents.Icon {
+                  anchors.centerIn: parent;
+                  width: 0.9*parent.width;
+                  height: 0.9*parent.height;
+                  color: if (src.position.directionValid) {"#FFFFFF"} else {"#FF0000"}
+                  name: "keyboard-caps-enabled";
+              }*/
+
             }
           }
 
@@ -327,7 +313,9 @@ MainView {
           Button{
             id : centerAtPosition
             width: parent.width/3;
-            onClicked: map.center = point.coordinate;
+            onClicked: {
+                map.center = point.coordinate
+                map.zoomLevel = 16}
             background: Rectangle {
                 color: Suru.backgroundColor;
             }
@@ -362,6 +350,9 @@ MainView {
 
     onPositionChanged: {
         point.coordinate = src.position.coordinate;
+        if (src.position.directionValid) {
+            point.rotation = src.position.direction;
+        }
     }
     }
     }
@@ -376,11 +367,6 @@ MainView {
           title: i18n.tr('List')
 
           trailingActionBar.actions: [
-          Action {
-              iconName: 'settings'
-              text: i18n.tr('Settings')
-              onTriggered: stackview.currentIndex = 2;
-              },
               Action {
                   iconName: 'reload'
                   text: i18n.tr('Reload from server');
@@ -390,11 +376,23 @@ MainView {
                   iconName: 'camera-grid'
                   text: i18n.tr('Go to map')
                   onTriggered: stackview.currentIndex = 0;
+              },
+              Action {
+                  iconName: 'stock_website'
+                  text: i18n.tr('Select network')
+                  onTriggered: stackview.currentIndex = 2;
+              },
+              Action {
+                  iconName: 'info'
+                  text: i18n.tr('Info')
+                  onTriggered: stackview.currentIndex = 3;
               }
           ]
       }
 
-
+      Rectangle {
+              anchors.fill: parent
+              color: Suru.backgroundColor
 
           ColumnLayout {
               spacing: 0
@@ -414,17 +412,12 @@ MainView {
                     TextField {
                         id: nameFilter
                         color: Suru.foregroundColor
-                        font.pointSize: 30
+                        font.pointSize: units.gu(2.5)
                         placeholderText: qsTr(i18n.tr("Search"))
                         width: parent.width
                         background: Rectangle {
                             color: Suru.backgroundColor
                         }
-                        /*UbuntuComponents.Icon {
-                        width: 10
-                        height: 10
-                        name: "search"
-                    }*/
                     }
             }
 
@@ -451,8 +444,10 @@ MainView {
                         onClicked: {
                             listView.currentIndex = index
                             stackview.currentIndex = 0
-                            map.center =  QtPositioning.coordinate(lat, lng)
-                            map.zoomLevel =  15
+                            map.center =  QtPositioning.coordinate(latitude, longitude)
+                            map.zoomLevel =  18
+                            /*PropertyAnimation { target: veloModel.get(index).bg ; property: "bg"; to: "#FF0000"; duration: 1000 }*/
+                            veloSortFilterModel.get(index).bg = "#FF0000";
                         }
                         /*onPressAndHold: {
                             if (root.favoriteStations.indexOf(index) > -1 ) {
@@ -468,9 +463,9 @@ MainView {
                             title.color: Suru.foregroundColor;
                             subtitle.color: Suru.foregroundColor;
                             summary.color: Suru.foregroundColor;
-                            title.text: "<b>"+number+"</b> "+name.split(" - ")[0]
-                            subtitle.text: i18n.tr("Address: ")+name.split(" - ")[1]
-                            summary.text: i18n.tr("Bikes")+": "+available_bikes+", "+ i18n.tr("Stands")+": "+available_bike_stands
+                            title.text: name
+                            subtitle.text: i18n.tr("Bikes")+": "+free_bikes+", "+ i18n.tr("Stands")+": "+empty_slots
+                            summary.text: i18n.tr("Timestamp: ")+timestamp
                         }
                     }
 
@@ -479,7 +474,7 @@ MainView {
                   ScrollBar.vertical: ScrollBar {}
               }
           }
-
+      }
     }
 
     Page {
@@ -487,7 +482,7 @@ MainView {
 
         header: PageHeader {
             id: header
-            title: i18n.tr("Settings")
+            title: i18n.tr("Select your network")
 
             trailingActionBar.actions: [
 
@@ -506,30 +501,92 @@ MainView {
 
      Rectangle {
              anchors.fill: parent
+             color: Suru.backgroundColor
 
+         ListModel {
+             id: networkModel
+                 ListElement {
+                     nw_id: "The ID"
+                     city: "The city"
+                     country: "The country"
+                     latitude: 0.0
+                     longitude: 0.0
+                     filterproperty: ""
+                     name: "The Name"
+                 }
+             }
 
-         ButtonGroup {
-             id: buttonGroup
-         }
+             ColumnLayout {
+                 spacing: 0
+                 anchors.fill: parent
+                 Rectangle {
+                     height: networkFilter.height
+                     width: parent.width
+                     color: Suru.backgroundColor
+                     border.color: Suru.foregroundColor
+                     border.width: 2
+                     anchors {
+                           left: parent.left
+                           top: parent.top
+                           right: parent.right
+                       }
+
+                       TextField {
+                           id: networkFilter
+                           color: Suru.foregroundColor
+                           font.pointSize: units.gu(2.5)
+                           placeholderText: qsTr(i18n.tr("Search"))
+                           width: parent.width
+                           background: Rectangle {
+                               color: Suru.backgroundColor
+                           }
+                       }
+               }
+
+             SortFilterModel {
+                 id: networksSortFilterModel
+                 model: networkModel
+                 sortCaseSensitivity: Qt.CaseInsensitive;
+                 filter.property: "filterproperty";
+                 filter.pattern: RegExp("" + networkFilter.text + "\\s?",'i');
+             }
 
          ListView {
-            id: contractSelection
-             anchors.fill: parent
-             width: parent.width
-             model: root.contractsCapital
-             delegate: RadioDelegate {
-                id: radioList
-                width: parent.width
-                ButtonGroup.group: buttonGroup
-                text: modelData
-                checked: root.contractsCapital[index] == root.contractName
-                onClicked: {
-                        console.log(root.contractsCapital[index] + ' selected')
-                        root.contractName = root.contractsCapital[index]
-                       }
-                }
+             id: networksListView
+             flickableDirection: Flickable.VerticalFlick
+             boundsBehavior: Flickable.StopAtBounds
+             clip: true
+             model: networksSortFilterModel
 
+             delegate: ListItem {
+                   id: networksDelegate
+                   color: Suru.backgroundColor
+                   height: layout.height + (divider.visible ? divider.height : 0)
+                       onClicked: {
+                            root.network_ID = networksSortFilterModel.get(index)["nw_id"]
+                            root.networkCenter = {'latitude': latitude, 'longitude': longitude}
+                            stackview.currentIndex = 0;
+                            map.center = QtPositioning.coordinate(networkCenter["latitude"], networkCenter["longitude"]);
+                            python.loadFromServer()
+                            }
+                   ListItemLayout {
+                       id: layout
+                       title.color: Suru.foregroundColor;
+                       subtitle.color: Suru.foregroundColor;
+                       summary.color: Suru.foregroundColor;
+                       title.text: name;
+                       subtitle.text: city;
+                       summary.text: country;
+
+                   }
+               }
+
+             Layout.fillWidth: true
+             Layout.fillHeight: true
+             ScrollBar.vertical: ScrollBar {}
          }
+
+     }
 
      }
      }
@@ -537,7 +594,10 @@ MainView {
 
      Page {
          anchors.fill: parent
+
          header: PageHeader {
+              title: i18n.tr("Info")
+             id: infoPageHeader
              trailingActionBar.actions: [
                  Action {
                      iconName: 'back'
@@ -547,15 +607,77 @@ MainView {
              ]
              }
 
-      Text {
-              anchors.fill: parent
-              width: 0.8* parent.width
-              text: i18n.tr("Please restart<br>this app to load<br>station information.")
-              font.pointSize: 24
-              color: "gray"
-              horizontalAlignment:Text.AlignHCenter
-              verticalAlignment: Text.AlignVCenter
+         Rectangle{
+             anchors.fill: parent
+             color: Suru.backgroundColor
+
+         Column{
+            anchors.centerIn: parent;
+            width: parent.width
+            anchors.top: infoPageHeader.bottom
+            anchors.bottom: parent.bottom
+            spacing: units.gu(4)
+
+            Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 0.8* parent.width
+                    font.weight: Font.DemiBold
+                    text: "OpenVelo"
+                    font.pointSize: units.gu(2.5)
+                    horizontalAlignment:Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    color: Suru.foregroundColor
+            }
+
+             ProportionalShape {
+                id: logo
+                width: units.gu(17)
+                source: Image {
+                   source: "../assets/logo.svg"
+                }
+                anchors.horizontalCenter: parent.horizontalCenter
+             }
+
+         Label {
+            text: i18n.tr("Version") + " " + Qt.application.version
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: Suru.foregroundColor
+         }
+
+
+         Label {
+                 anchors.horizontalCenter: parent.horizontalCenter
+                 width: 0.8* parent.width
+                 text: i18n.tr("Source code: <a href='https://github.com/hendrikscheewel/OpenVelo'>github.com/hendrikscheewel/OpenVelo</a>. ")
+                 wrapMode: Text.WordWrap
+                 horizontalAlignment:Text.AlignHCenter
+                 verticalAlignment: Text.AlignVCenter
+                 color: Suru.foregroundColor
+         }
+
+      Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: 0.8* parent.width
+                text: i18n.tr("API: Open Velo uses open bike sharing data provided by <a href='https://citybik.es/'>citybike.es</a>. Learn more about the project <a href='https://citybik.es/#about'>here</a>. ")
+                wrapMode: Text.WordWrap
+                horizontalAlignment:Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                color: Suru.foregroundColor
       }
+
+      Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: 0.8* parent.width
+                text: i18n.tr("Thanks to all translators! ")
+                wrapMode: Text.WordWrap
+                horizontalAlignment:Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                color: Suru.foregroundColor
+      }
+
+      }
+    }
+
       }
 
 
@@ -567,63 +689,81 @@ MainView {
             addImportPath(Qt.resolvedUrl('./'));
 
             importModule('main', function() {
-            python.call('main.AllInfo', [root.contractName], function(returnValue) {
-            veloModel.clear()
-              for (var i = 0; i < returnValue.length; i = i+1)  {
 
-                  veloModel.append({"number": returnValue[i]['number'],
-                                    "name":returnValue[i]['address'],
-                                    "available_bikes": returnValue[i]['available_bikes'],
-                                    "available_bike_stands": returnValue[i]['available_bike_stands'],
-                                    "lat": returnValue[i]['position']['lat'],
-                                    "lng": returnValue[i]['position']['lng'],
-                                    "status": returnValue[i]['status'],})
-              }
+                python.call('main.load_networks', [], function(returnValue) {
 
-              loadingDialog.visible =  false
-            })
+                    networkModel.clear()
+                      for (var i = 0; i < returnValue.length; i = i+1)  {
+
+                          networkModel.append({"nw_id": returnValue[i]['id'],
+                                            "city":returnValue[i]['location']['city'],
+                                            "latitude": returnValue[i]['location']['latitude'],
+                                            "longitude": returnValue[i]['location']['longitude'],
+                                            "country": returnValue[i]['location']['country'],
+                                            "filterproperty":  returnValue[i]['location']['city'] + returnValue[i]['name'],
+                                            "name": returnValue[i]['name']})
+                }
+
+                })
+
 
             });
+
+
+            python.loadFromServer()
+
 
             }
         onError: {
             console.log('python error: ' + traceback);
-        }
+            }
 
         function loadFromServer(){
                 loadingDialog.visible =  true
                 map.zoomLevel = 13
                 veloModel.clear()
 
-                python.call('main.AllInfo', [root.contractName], function(returnValue) {
+                python.call('main.load_stations', [network_ID], function(returnValue) {
 
                   for (var i = 0; i < returnValue.length; i = i+1)  {
 
-                      veloModel.append({"number": returnValue[i]['number'],
-                                        "name":returnValue[i]['address'],
-                                        "available_bikes": returnValue[i]['available_bikes'],
-                                        "available_bike_stands": returnValue[i]['available_bike_stands'],
-                                        "lat": returnValue[i]['position']['lat'],
-                                        "lng": returnValue[i]['position']['lng'],
-                                        "status": returnValue[i]['status'],})
-                  }
+                      veloModel.append({"empty_slots": returnValue[i]['empty_slots'],
+                                        "free_bikes":returnValue[i]['free_bikes'],
+                                        "station_ID": returnValue[i]['id'],
+                                        "latitude": returnValue[i]['latitude'],
+                                        "longitude": returnValue[i]['longitude'],
+                                        "name": returnValue[i]['name'],
+                                        "timestamp": returnValue[i]['timestamp'],
+                                        "bg": "gray"})
+                }
+                loadingDialog.visible =  false
+
+
+
 
                 })
-                loadingDialog.visible =  false
+
             }
+
+
+
+
         }
 
     }
 
     Settings {
       id: settings
-      property var contractName: 'bruxelles';
+      property var network_ID: networkModel.get(0)['nw_id'];
+      property var networkCenter: {'latitude': networkModel.get(0)["latitude"], 'longitude': networkModel.get(0)["longitude"]}
       property var favoriteStations: [];
     }
 
 
     Component.onDestruction: {
-            settings.contractName = root.contractName
+            settings.network_ID = root.network_ID
             settings.favoriteStations = root.favoriteStations
+            settings.networkCenter = root.networkCenter
+
         }
 }
