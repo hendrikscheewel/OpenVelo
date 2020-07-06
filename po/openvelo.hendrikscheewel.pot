@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-06 11:11+0000\n"
+"POT-Creation-Date: 2020-07-06 11:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:61
+#: ../qml/Main.qml:60
 msgid "Map"
 msgstr ""
 
-#: ../qml/Main.qml:66
+#: ../qml/Main.qml:65
 msgid "Reload from Server"
 msgstr ""
 
-#: ../qml/Main.qml:71
+#: ../qml/Main.qml:70
 msgid "Update Location"
 msgstr ""
 
-#: ../qml/Main.qml:76 ../qml/Main.qml:382
+#: ../qml/Main.qml:75 ../qml/Main.qml:384
 msgid "Select network"
 msgstr ""
 
-#: ../qml/Main.qml:81 ../qml/Main.qml:387 ../qml/Main.qml:599
+#: ../qml/Main.qml:80 ../qml/Main.qml:389 ../qml/Main.qml:601
 msgid "Info"
 msgstr ""
 
-#: ../qml/Main.qml:221 ../qml/Main.qml:467
+#: ../qml/Main.qml:220 ../qml/Main.qml:469
 msgid "Bikes"
 msgstr ""
 
-#: ../qml/Main.qml:237 ../qml/Main.qml:467
+#: ../qml/Main.qml:236 ../qml/Main.qml:469
 msgid "Stands"
 msgstr ""
 
@@ -49,56 +49,56 @@ msgstr ""
 msgid "Center"
 msgstr ""
 
-#: ../qml/Main.qml:367
+#: ../qml/Main.qml:369
 msgid "List"
 msgstr ""
 
-#: ../qml/Main.qml:372
+#: ../qml/Main.qml:374
 msgid "Reload from server"
 msgstr ""
 
-#: ../qml/Main.qml:377
+#: ../qml/Main.qml:379
 msgid "Go to map"
 msgstr ""
 
-#: ../qml/Main.qml:416 ../qml/Main.qml:538
+#: ../qml/Main.qml:418 ../qml/Main.qml:540
 msgid "Search"
 msgstr ""
 
-#: ../qml/Main.qml:468
+#: ../qml/Main.qml:470
 msgid "Timestamp: "
 msgstr ""
 
-#: ../qml/Main.qml:485
+#: ../qml/Main.qml:487
 msgid "Select your network"
 msgstr ""
 
-#: ../qml/Main.qml:491
+#: ../qml/Main.qml:493
 msgid "Check"
 msgstr ""
 
-#: ../qml/Main.qml:604
+#: ../qml/Main.qml:606
 msgid "Return to map"
 msgstr ""
 
-#: ../qml/Main.qml:642
+#: ../qml/Main.qml:644
 msgid "Version"
 msgstr ""
 
-#: ../qml/Main.qml:651
+#: ../qml/Main.qml:653
 msgid ""
 "Source code: <a href='https://github.com/hendrikscheewel/OpenVelo'>github."
 "com/hendrikscheewel/OpenVelo</a>. "
 msgstr ""
 
-#: ../qml/Main.qml:661
+#: ../qml/Main.qml:663
 msgid ""
 "API: Open Velo uses open bike sharing data provided by <a href='https://"
 "citybik.es/'>citybike.es</a>. Learn more about the project <a href='https://"
 "citybik.es/#about'>here</a>. "
 msgstr ""
 
-#: ../qml/Main.qml:671
+#: ../qml/Main.qml:673
 msgid "Thanks to all translators! "
 msgstr ""
 

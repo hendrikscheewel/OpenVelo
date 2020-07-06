@@ -52,7 +52,6 @@ MainView {
             id: stackview
             anchors.fill : parent
 
-
             Page {
                 anchors.fill: parent
 
@@ -305,6 +304,7 @@ MainView {
             }
             contentItem: Text {
                 text: '-';
+                font.pointSize: units.gu(2)
                 color: Suru.foregroundColor;
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -321,6 +321,7 @@ MainView {
             }
             contentItem: Text {
                 text: i18n.tr("Center");
+                font.pointSize: units.gu(2)
                 color: Suru.foregroundColor;
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -335,6 +336,7 @@ MainView {
             }
             contentItem: Text {
                 text: '+';
+                font.pointSize: units.gu(2)
                 color: Suru.foregroundColor;
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
