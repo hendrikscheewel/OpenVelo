@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openvelo.hendrikscheewel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-29 13:06+0000\n"
-"PO-Revision-Date: 2020-05-29 21:22+0200\n"
+"POT-Creation-Date: 2020-07-06 11:32+0000\n"
+"PO-Revision-Date: 2020-07-08 16:49+0200\n"
 "Last-Translator: Anne017 <anneonyme017@openmailbox.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,66 +16,107 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:97
+#: ../qml/Main.qml:60
 msgid "Map"
 msgstr "Carte"
 
-#: ../qml/Main.qml:102 ../qml/Main.qml:386 ../qml/Main.qml:471
-msgid "Settings"
-msgstr "Paramètres"
-
-#: ../qml/Main.qml:107
+#: ../qml/Main.qml:65
 msgid "Reload from Server"
 msgstr "Actualiser à partir du serveur"
 
-#: ../qml/Main.qml:112
+#: ../qml/Main.qml:70
 msgid "Update Location"
 msgstr "Mettre à jour la position"
 
-#: ../qml/Main.qml:249 ../qml/Main.qml:454
+#: ../qml/Main.qml:75 ../qml/Main.qml:384
+msgid "Select network"
+msgstr "Sélectionner le réseau"
+
+#: ../qml/Main.qml:80 ../qml/Main.qml:389 ../qml/Main.qml:601
+msgid "Info"
+msgstr "Informations"
+
+#: ../qml/Main.qml:220 ../qml/Main.qml:469
 msgid "Bikes"
 msgstr "Vélos"
 
-#: ../qml/Main.qml:265 ../qml/Main.qml:454
+#: ../qml/Main.qml:236 ../qml/Main.qml:469
 msgid "Stands"
 msgstr "Stations"
 
-#: ../qml/Main.qml:339
+#: ../qml/Main.qml:323
 msgid "Center"
 msgstr "Centre"
 
-#: ../qml/Main.qml:381
+#: ../qml/Main.qml:369
 msgid "List"
 msgstr "Liste"
 
-#: ../qml/Main.qml:391
+#: ../qml/Main.qml:374
 msgid "Reload from server"
 msgstr "Actualiser à partir du serveur"
 
-#: ../qml/Main.qml:396
+#: ../qml/Main.qml:379
 msgid "Go to map"
 msgstr "Consulter la carte"
 
-#: ../qml/Main.qml:417
+#: ../qml/Main.qml:418 ../qml/Main.qml:540
 msgid "Search"
 msgstr "Rechercher"
 
-#: ../qml/Main.qml:453
-msgid "Address: "
-msgstr "Adresse : "
+#: ../qml/Main.qml:470
+msgid "Timestamp: "
+msgstr "Horodatage : "
 
-#: ../qml/Main.qml:479
+#: ../qml/Main.qml:487
+msgid "Select your network"
+msgstr "Sélectionnez votre réseau"
+
+#: ../qml/Main.qml:493
 msgid "Check"
 msgstr "Vérifier"
 
-#: ../qml/Main.qml:527
+#: ../qml/Main.qml:606
 msgid "Return to map"
 msgstr "Retourner à la carte"
 
-#: ../qml/Main.qml:536
-msgid "Please restart<br>this app to load<br>station information."
-msgstr "Veuillez redémarrer<br>cette application pour charger<br>les informations sur la station."
+#: ../qml/Main.qml:644
+msgid "Version"
+msgstr "Version"
+
+#: ../qml/Main.qml:653
+msgid ""
+"Source code: <a href='https://github.com/hendrikscheewel/OpenVelo'>github."
+"com/hendrikscheewel/OpenVelo</a>. "
+msgstr ""
+"Code source : <a href='https://github.com/hendrikscheewel/OpenVelo'>github."
+"com/hendrikscheewel/OpenVelo</a>. "
+
+#: ../qml/Main.qml:663
+msgid ""
+"API: Open Velo uses open bike sharing data provided by <a href='https://"
+"citybik.es/'>citybike.es</a>. Learn more about the project <a href='https://"
+"citybik.es/#about'>here</a>. "
+msgstr ""
+"API : Open Velo utilise des données publiques sur le partage de vélos "
+"fournies par <a href='https://citybik.es/'>citybike.es</a>. Apprenez-en plus "
+"sur le sujet <a href='https://citybik.es/#about'>ici</a>. "
+
+#: ../qml/Main.qml:673
+msgid "Thanks to all translators! "
+msgstr "Merci à tous les traducteurs/trices !"
 
 #: OpenVelo.desktop.in.h:1
 msgid "OpenVelo"
 msgstr "OpenVelo"
+
+#~ msgid "Settings"
+#~ msgstr "Paramètres"
+
+#~ msgid "Address: "
+#~ msgstr "Adresse : "
+
+#~ msgid "Please restart<br>this app to load<br>station information."
+#~ msgstr ""
+#~ "Veuillez redémarrer<br>cette application pour charger<br>les informations "
+#~ "sur la station."
