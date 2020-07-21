@@ -15,6 +15,7 @@
 '''
 
 import json
+import datetime
 import urllib.request
 
 networks_url = "http://api.citybik.es/v2/networks?fields=id,name,location"
@@ -33,5 +34,23 @@ def load_networks():
 def load_stations(network_ID):
     ID_url = "http://api.citybik.es/v2/networks/{ID}".format(ID=network_ID)
     data = load_data(ID_url)['network']['stations']
+    
+    for i in range(len(data)):
+        timestamp = data[i]['timestamp']
+
+        time_of_update = last_update = datetime.datetime.strptime(timestamp,"%Y-%m-%dT%H:%M:%S.%fZ") 
+        time_now = datetime.datetime.now()
+
+        time_since_update = time_now - time_of_update
+
+        hours = time_since_update.total_seconds()/(60*60)
+        hours_int = int(hours)
+        minutes = hours-hours_int
+        minutes_int = int(minutes*60)
+
+        data[i]['time_since_update'] = {
+            'hours': hours_int,
+            'minutes': minutes_int
+        }
     return(data)
 

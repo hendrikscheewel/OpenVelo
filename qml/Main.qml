@@ -100,7 +100,8 @@ MainView {
                   latitude: 0
                   longitude: 0
                   name: ""
-                  timestamp: ""
+                  hours_since_update: 0
+                  minutes_since_update: 0
                   bg: ""
             }
             }
@@ -413,8 +414,15 @@ MainView {
 
                     TextField {
                         id: nameFilter
+
+                        anchors {
+                        left: parent.left
+                        right: parent.right
+                        }
+
                         color: Suru.foregroundColor
                         font.pointSize: units.gu(2.5)
+                        inputMethodHints: Qt.ImhNoPredictiveText
                         placeholderText: qsTr(i18n.tr("Search"))
                         width: parent.width
                         background: Rectangle {
@@ -467,7 +475,7 @@ MainView {
                             summary.color: Suru.foregroundColor;
                             title.text: name
                             subtitle.text: i18n.tr("Bikes")+": "+free_bikes+", "+ i18n.tr("Stands")+": "+empty_slots
-                            summary.text: i18n.tr("Timestamp: ")+timestamp
+                            summary.text: i18n.tr("Time since update: " + hours_since_update + i18n.tr("h ") + minutes_since_update + i18n.tr("m "))
                         }
                     }
 
@@ -737,7 +745,8 @@ MainView {
                                         "latitude": returnValue[i]['latitude'],
                                         "longitude": returnValue[i]['longitude'],
                                         "name": returnValue[i]['name'],
-                                        "timestamp": returnValue[i]['timestamp'],
+                                        "hours_since_update": returnValue[i]['time_since_update']['hours'],
+                                        "minutes_since_update": returnValue[i]['time_since_update']['minutes'],
                                         "bg": "gray"})
                 }
                 loadingDialog.visible =  false
