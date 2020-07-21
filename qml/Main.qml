@@ -655,16 +655,18 @@ MainView {
                  horizontalAlignment:Text.AlignHCenter
                  verticalAlignment: Text.AlignVCenter
                  color: Suru.foregroundColor
+                 onLinkActivated: Qt.openUrlExternally(link)
          }
 
       Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 0.8* parent.width
-                text: i18n.tr("API: Open Velo uses open bike sharing data provided by <a href='https://citybik.es/'>citybike.es</a>. Learn more about the project <a href='https://citybik.es/#about'>here</a>. ")
+                text: i18n.tr("API: Open Velo uses open bike sharing data provided by <a href='https://citybik.es/'>citybik.es</a>. Learn more about the project <a href='https://citybik.es/#about'>here</a>. ")
                 wrapMode: Text.WordWrap
                 horizontalAlignment:Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 color: Suru.foregroundColor
+                onLinkActivated: Qt.openUrlExternally(link)
       }
 
       Label {
